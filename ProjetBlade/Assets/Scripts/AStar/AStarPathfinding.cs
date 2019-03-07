@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class Pathfinding : MonoBehaviour {
+public class AStarPathfinding : MonoBehaviour {
 
-    PathRequestManager requestManager;
-    Grid grid;
+    AStarPathRequestManager requestManager;
+    AStarGrid grid;
 
     void Awake() {
-        requestManager = GetComponent<PathRequestManager>();
-        grid = GetComponent<Grid>();
+        requestManager = GetComponent<AStarPathRequestManager>();
+        grid = GetComponent<AStarGrid>();
     }
 
 
@@ -23,17 +23,16 @@ public class Pathfinding : MonoBehaviour {
         Vector3[] waypoints = new Vector3[0];
         bool pathSuccess = false;
 
-        Node startNode = grid.NodeFromWorldPoint(startPos);
-        Node targetNode = grid.NodeFromWorldPoint(targetPos);
-
+        AStarNode startNode = grid.NodeFromWorldPoint(startPos);
+        AStarNode targetNode = grid.NodeFromWorldPoint(targetPos);
 
         if (startNode.walkable && targetNode.walkable) {
-            Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
-            HashSet<Node> closedSet = new HashSet<Node>();
+            Heap<AStarNode> openSet = new Heap<AStarNode>(grid.MaxSize);
+            HashSet<AStarNode> closedSet = new HashSet<AStarNode>();
             openSet.Add(startNode);
 
             while (openSet.Count > 0) {
-                Node currentNode = openSet.RemoveFirst();
+                AStarNode currentNode = openSet.RemoveFirst();
                 closedSet.Add(currentNode);
 
                 if (currentNode == targetNode) {
@@ -41,7 +40,7 @@ public class Pathfinding : MonoBehaviour {
                     break;
                 }
 
-                foreach (Node neighbour in grid.GetNeighbours(currentNode)) {
+                foreach (AStarNode neighbour in grid.GetNeighbours(currentNode)) {
                     if (!neighbour.walkable || closedSet.Contains(neighbour)) {
                         continue;
                     }
@@ -62,12 +61,15 @@ public class Pathfinding : MonoBehaviour {
         if (pathSuccess) {
             waypoints = RetracePath(startNode, targetNode);
         }
+        if (waypoints.Length <= 0) {
+            pathSuccess = false;
+        }
         requestManager.FinishedProcessingPath(waypoints, pathSuccess);
     }
 
-    Vector3[] RetracePath(Node startNode, Node endNode) {
-        List<Node> path = new List<Node>();
-        Node currentNode = endNode;
+    Vector3[] RetracePath(AStarNode startNode, AStarNode endNode) {
+        List<AStarNode> path = new List<AStarNode>();
+        AStarNode currentNode = endNode;
 
         while (currentNode != startNode) {
             path.Add(currentNode);
@@ -78,7 +80,7 @@ public class Pathfinding : MonoBehaviour {
         return waypoints;
     }
 
-    Vector3[] SimplifyPath(List<Node> path) {
+    Vector3[] SimplifyPath(List<AStarNode> path) {
         List<Vector3> waypoints = new List<Vector3>();
         Vector2 directionOld = Vector2.zero;
 
@@ -92,7 +94,7 @@ public class Pathfinding : MonoBehaviour {
         return waypoints.ToArray();
     }
 
-    int GetDistance(Node nodeA, Node nodeB) {
+    int GetDistance(AStarNode nodeA, AStarNode nodeB) {
         int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
         int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 

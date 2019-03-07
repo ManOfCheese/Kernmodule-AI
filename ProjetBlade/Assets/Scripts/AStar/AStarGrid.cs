@@ -2,13 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Grid : MonoBehaviour {
+public class AStarGrid : MonoBehaviour {
 
     public bool displayGridGizmos;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    Node[,] grid;
+    AStarNode[,] grid;
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
@@ -27,20 +27,20 @@ public class Grid : MonoBehaviour {
     }
 
     void CreateGrid() {
-        grid = new Node[gridSizeX, gridSizeY];
+        grid = new AStarNode[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
         for (int x = 0; x < gridSizeX; x++) {
             for (int y = 0; y < gridSizeY; y++) {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+                grid[x, y] = new AStarNode(walkable, worldPoint, x, y);
             }
         }
     }
 
-    public List<Node> GetNeighbours(Node node) {
-        List<Node> neighbours = new List<Node>();
+    public List<AStarNode> GetNeighbours(AStarNode node) {
+        List<AStarNode> neighbours = new List<AStarNode>();
 
         for (int x = -1; x <= 1; x++) {
             for (int y = -1; y <= 1; y++) {
@@ -60,7 +60,7 @@ public class Grid : MonoBehaviour {
     }
 
 
-    public Node NodeFromWorldPoint(Vector3 worldPosition) {
+    public AStarNode NodeFromWorldPoint(Vector3 worldPosition) {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
         float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
@@ -74,7 +74,7 @@ public class Grid : MonoBehaviour {
     void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if (grid != null && displayGridGizmos) {
-            foreach (Node n in grid) {
+            foreach (AStarNode n in grid) {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }

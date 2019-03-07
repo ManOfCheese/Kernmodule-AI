@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class PathRequestManager : MonoBehaviour {
+public class AStarPathRequestManager : MonoBehaviour {
 
     private Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
     private PathRequest currentPathRequest;
 
-    private static PathRequestManager instance;
-    private Pathfinding pathfinding;
+    private static AStarPathRequestManager instance;
+    private AStarPathfinding pathfinding;
 
     bool isProcessingPath;
 
     void Awake() {
         instance = this;
-        pathfinding = GetComponent<Pathfinding>();
+        pathfinding = GetComponent<AStarPathfinding>();
     }
 
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback) {

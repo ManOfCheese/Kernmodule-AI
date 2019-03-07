@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class AStarUnit : MonoBehaviour {
 
     public Transform target;
     public float speed = 20;
@@ -14,7 +14,7 @@ public class Unit : MonoBehaviour {
 
     IEnumerator CheckPath() {
         while (true) {
-            PathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+            AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
             yield return new WaitForSeconds(1);
         }
     }
