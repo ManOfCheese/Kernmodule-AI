@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTInverter : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+//the inverter returns the reverse of it's childNode.
+public class BTInverter : ABTNode {
+
+    public override TaskState Tick() {
+        //If the child is succesful return failure.
+        if (childNode.Tick() == TaskState.Succes) {
+            return TaskState.Failure;
+        }
+        //If the child fails return succes.
+        else if (childNode.Tick() == TaskState.Failure) {
+            return TaskState.Succes;
+        }
+        else {
+            return childNode.Tick();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

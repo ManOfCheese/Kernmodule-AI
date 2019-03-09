@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTAmSeen : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+//The AmSeen node will return succes if target is looking at it and failure if not.
+public class BTAmSeen : ABTNode {
+
+    public GameObject target;
+    public float angle;
+
+    public override TaskState Tick() {
+        if (Vector3.Angle(target.transform.forward, transform.position - target.transform.position) < angle) {
+            return TaskState.Succes;
+        }
+        else {
+            return TaskState.Failure;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

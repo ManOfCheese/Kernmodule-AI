@@ -7,24 +7,34 @@ public class AStarUnit : MonoBehaviour {
     public float speed = 20;
     private Vector3[] path;
     private int targetIndex;
+    private BTMoveTowardsTarget moveTowardsTargetNode;
 
     void Start() {
-        StartCoroutine(CheckPath());
+        moveTowardsTargetNode = GetComponent<BTMoveTowardsTarget>();
+        //StartCoroutine(CheckPath());
     }
 
-    IEnumerator CheckPath() {
+    /*IEnumerator CheckPath() {
         while (true) {
             AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
             yield return new WaitForSeconds(1);
         }
+    }*/
+
+    public void RequestPath(Transform target) {
+        AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
         if (pathSuccessful) {
+            moveTowardsTargetNode.pathFound = 1;
             path = newPath;
             targetIndex = 0;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
+        }
+        else {
+            moveTowardsTargetNode.pathFound = 2;
         }
     }
 
@@ -36,6 +46,7 @@ public class AStarUnit : MonoBehaviour {
                 if (transform.position == currentWaypoint) {
                     targetIndex++;
                     if (targetIndex >= path.Length) {
+                        moveTowardsTargetNode.goalReached = true;
                         yield break;
                     }
                     currentWaypoint = path[targetIndex];

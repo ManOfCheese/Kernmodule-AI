@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BTPrioritySelector : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+//The priority selector will process all children in sequence returning succes if any child succeeds not processing further children.
+//Thus it will only return failure if all children fail.
+public class BTPrioritySelector : ABTNode {
+
+    public List<ABTNode> childNodes;
+
+    public override TaskState Tick() {
+        foreach (ABTNode node in childNodes) {
+            //If any node succeeds return succes.
+            if (node.Tick() == TaskState.Succes) {
+                return TaskState.Succes;
+            }
+            //If any node is still running return runnig.
+            else if (node.Tick() == TaskState.Running) {
+                return TaskState.Running;
+            }
+        }
+        //Otherwise return failure.
+        return TaskState.Failure;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
