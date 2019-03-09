@@ -7,11 +7,13 @@ public class AStarUnit : MonoBehaviour {
     public float speed = 20;
     private Vector3[] path;
     private int targetIndex;
-    private BTMoveTowardsTarget moveTowardsTargetNode;
+    public BTMoveTowardsTarget moveTowardsTargetNode;
+    public BTRoot rootNode;
 
     void Start() {
         moveTowardsTargetNode = GetComponent<BTMoveTowardsTarget>();
         //StartCoroutine(CheckPath());
+        StartCoroutine(CheckBehaviorTree());
     }
 
     /*IEnumerator CheckPath() {
@@ -21,12 +23,20 @@ public class AStarUnit : MonoBehaviour {
         }
     }*/
 
+    IEnumerator CheckBehaviorTree() {
+    while (true) {
+            rootNode.StartBT();
+            yield return new WaitForSeconds(1);
+        }
+    }
+
     public void RequestPath(Transform target) {
         AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
         if (pathSuccessful) {
+            Debug.Log("Pathfinding Succesful");
             moveTowardsTargetNode.pathFound = 1;
             path = newPath;
             targetIndex = 0;
@@ -39,6 +49,7 @@ public class AStarUnit : MonoBehaviour {
     }
 
     IEnumerator FollowPath() {
+        Debug.Log("Following Path");
         if (path != null) {
             Vector3 currentWaypoint = path[0];
 
@@ -54,7 +65,6 @@ public class AStarUnit : MonoBehaviour {
 
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
                 yield return null;
-
             }
         }
         else {

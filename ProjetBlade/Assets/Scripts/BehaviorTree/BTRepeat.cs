@@ -13,6 +13,7 @@ public class BTRepeat : ABTNode {
         if (childNode.Tick() == TaskState.Failure || childNode.Tick() == TaskState.Succes || childNode.Tick() == TaskState.Running) {
             Tick();
         }
+        Debug.Log("Sequence || Succes");
         return TaskState.Succes;
     }
 

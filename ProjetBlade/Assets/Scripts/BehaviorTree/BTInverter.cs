@@ -8,10 +8,12 @@ public class BTInverter : ABTNode {
     public override TaskState Tick() {
         //If the child is succesful return failure.
         if (childNode.Tick() == TaskState.Succes) {
+            //Debug.Log("Inverter || Failure");
             return TaskState.Failure;
         }
         //If the child fails return succes.
         else if (childNode.Tick() == TaskState.Failure) {
+            //Debug.Log("Inverter || Succes");
             return TaskState.Succes;
         }
         else {

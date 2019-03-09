@@ -13,11 +13,13 @@ public class BTWeightedRandomSelector : ABTNode {
         for (int i = 0; i < childNodes.Count; i++) {
             if (i == 0) {
                 if (randomResult < chanceWeights[i]) {
+                    //Debug.Log("WeightedRandomSelector || " + childNodes[i].Tick());
                     return childNodes[i].Tick();
                 }
             }
             else {
                 if (randomResult > chanceWeights[i - 1] && randomResult < chanceWeights[i]) {
+                    //Debug.Log("WeightedRandomSelector || " + childNodes[i].Tick());
                     return childNodes[i].Tick();
                 }
             }

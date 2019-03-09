@@ -6,30 +6,34 @@ using UnityEngine;
 public class BTMeleeAttack : ABTNode {
 
     public GameObject target;
+    public Animator animator;
 
-    private Animator animator;
-    private bool animationCompleted;
+    private bool initialized;
 
-    private void Start() {
-        animator = GetComponent<Animator>();
+    public void Initialize() {
+        animator.SetTrigger("MeleeAttack");
     }
 
     public override TaskState Tick() {
-        transform.LookAt(target.transform);
-        animator.SetTrigger("MeleeAttack");
+        if (!initialized) {
+            Initialize();
+            initialized = true;
+        }
+        animator.SetBool("Running", false);
         //If the animation has been completed return succes.
-        if (animationCompleted) {
-            animationCompleted = false;
+        if (animator.GetCurrentAnimatorStateInfo(0).length > animator.GetCurrentAnimatorStateInfo(0).normalizedTime) {
+            initialized = false;
+            //Debug.Log("MeleeAttack || Succes");
             return TaskState.Succes;
         }
         //If the animation is not completed by is playing return running.
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RangedAttack")) {
+        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinMeleeAttack")) {
+            //Debug.Log("MeleeAttack || Running");
             return TaskState.Running;
         }
+        //Debug.Log("MeleeAttack || Failure");
+        animator.SetBool("MeleeAttack", false);
+        initialized = false;
         return TaskState.Failure;
-    }
-
-    public void AnimationComplete() {
-        animationCompleted = true;
     }
 }

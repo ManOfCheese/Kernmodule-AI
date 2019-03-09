@@ -7,33 +7,37 @@ public class BTThrow : ABTNode {
 
     public GameObject target;
     public GameObject rock;
+    public Animator animator;
 
-    private Animator animator;
-    private bool animationCompleted;
     private bool rockThrown;
+    private bool initialized;
 
-    private void Start() {
-        animator = GetComponent<Animator>();
+
+    public void Initialize() {
+        animator.SetTrigger("RangedAttack");
+        GameObject newRock = Instantiate(rock, transform.position + transform.forward, Quaternion.identity);
+        newRock.GetComponent<Rigidbody>().velocity = BallisticVel(target.transform);
     }
 
     public override TaskState Tick() {
-        GameObject newRock = Instantiate(rock, transform.position, Quaternion.identity);
-        newRock.GetComponent<Rigidbody>().velocity = BallisticVel(target.transform);
-        animator.SetTrigger("RangedAttack");
-        //If the animation has been completed return succes.
-        if (animationCompleted) {
-            animationCompleted = false;
-            return TaskState.Succes;
+        if (!initialized) {
+            Initialize();
+            initialized = true;
         }
         //If the animation is not completed by is playing return running.
-        else if (animator.GetCurrentAnimatorStateInfo(0).IsName("RangedAttack")) {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinRangedAttack")) {
+            //Debug.Log("Throw || Running");
             return TaskState.Running;
         }
+        //If the animation has been completed return succes.
+        else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f) {
+            initialized = false;
+            //Debug.Log("Throw || Succes");
+            return TaskState.Succes;
+        }
+        initialized = false;
+        Debug.Log("Throw || Failure");
         return TaskState.Failure;
-    }
-
-    public void AnimationComplete() {
-        animationCompleted = true;
     }
 
     Vector3 BallisticVel(Transform target) {

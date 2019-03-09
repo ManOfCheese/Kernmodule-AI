@@ -12,14 +12,17 @@ public class BTPrioritySelector : ABTNode {
         foreach (ABTNode node in childNodes) {
             //If any node succeeds return succes.
             if (node.Tick() == TaskState.Succes) {
+                //Debug.Log("PrioritySelector || Succes");
                 return TaskState.Succes;
             }
             //If any node is still running return runnig.
             else if (node.Tick() == TaskState.Running) {
+                //Debug.Log("Priority Selector || Running");
                 return TaskState.Running;
             }
         }
         //Otherwise return failure.
+        //Debug.Log("PrioritySelector || Failure");
         return TaskState.Failure;
     }
 

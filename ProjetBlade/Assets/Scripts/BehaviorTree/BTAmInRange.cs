@@ -11,9 +11,11 @@ public class BTAmInRange : ABTNode {
     public override TaskState Tick() {
         //Check if the target is within range.
         if (Vector3.Distance(this.transform.position, target.transform.position) <= range) {
+            //Debug.Log("AmInRange || Succes");
             return TaskState.Succes;
         }
         else {
+            //Debug.Log("AmInRange || Failure");
             return TaskState.Failure;
         }
     }

@@ -14,10 +14,12 @@ public class BTSequence : ABTNode {
         foreach (ABTNode node in childNodes) {
             if (node.Tick() == TaskState.Failure) {
                 //If any fails immediately return failure.
+                //Debug.Log("Sequence || Failure");
                 return TaskState.Failure;
             }
             else if (node.Tick() == TaskState.Running) {
                 //Same for running.
+                //Debug.Log("Sequence || Running");
                 return TaskState.Running;
             }
             else if (node.Tick() == TaskState.Succes) {
@@ -27,10 +29,11 @@ public class BTSequence : ABTNode {
         }
         //If all nodes succeeded return succes.
         if (succesCount == childNodes.Count) {
+            //Debug.Log("Sequence || Succes");
             return TaskState.Succes;
         }
         else {
-            Debug.Log("Sequence || No node was ticked");
+            //Debug.Log("Sequence || No node was ticked");
             return TaskState.Failure;
         }
     }

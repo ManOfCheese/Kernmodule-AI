@@ -10,9 +10,11 @@ public class BTAmSeen : ABTNode {
 
     public override TaskState Tick() {
         if (Vector3.Angle(target.transform.forward, transform.position - target.transform.position) < angle) {
+            //Debug.Log("AmSeen || Succes");
             return TaskState.Succes;
         }
         else {
+            //Debug.Log("AmSeen || Failure");
             return TaskState.Failure;
         }
     }
