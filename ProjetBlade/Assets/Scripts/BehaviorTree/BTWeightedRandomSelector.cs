@@ -9,7 +9,7 @@ public class BTWeightedRandomSelector : ABTNode {
     public List<float> chanceWeights; //Must add up to 1;
 
     public override TaskState Tick() {
-        int randomResult = Random.Range(0, 1);
+        float randomResult = Random.Range(0.0f, 1.0f);
         for (int i = 0; i < childNodes.Count; i++) {
             if (i == 0) {
                 if (randomResult < chanceWeights[i]) {
