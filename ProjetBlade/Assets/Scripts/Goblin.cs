@@ -13,6 +13,7 @@ public class Goblin : MonoBehaviour {
 
     //These functions must be predefined because they are immediately requested by the behavior trees.
     public AStarUnit unit;
+    public BoidAgent boidUnit;
     public Animator animator;
     public GameObject moveTarget;
     public GameObject attackTarget;
@@ -31,6 +32,8 @@ public class Goblin : MonoBehaviour {
         agressiveState = GetComponent<AgressiveState>();
         defensiveState = GetComponent<DefensiveState>();
         swarmState = GetComponent<SwarmState>();
+        swarmState.AStarUnit = unit;
+        swarmState.boidUnit = GetComponent<BoidAgent>();
         suicidalState = GetComponent<SuicideState>();
         unit = this.GetComponent<AStarUnit>();
         animator = transform.GetComponentInChildren<Animator>();

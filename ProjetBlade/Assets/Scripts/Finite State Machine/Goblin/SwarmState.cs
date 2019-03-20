@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class SwarmState : State {
 
-    public override void EnterState() {
+    public AStarUnit AStarUnit;
+    public BoidAgent boidUnit;
 
+    public override void EnterState() {
+        AStarUnit.enabled = false;
+        boidUnit.enabled = true;
     }
 
     public override void ExitState() {
-
+        AStarUnit.enabled = true;
+        boidUnit.enabled = false;
     }
 
     public override void UpdateState() {
