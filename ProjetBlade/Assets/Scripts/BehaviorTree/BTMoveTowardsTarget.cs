@@ -5,11 +5,14 @@ using UnityEngine;
 //The MoveTowardsTarget node will return running until it has reached its target when it will return succes. If it cannot reach the target it returns failure.
 public class BTMoveTowardsTarget : ABTNode {
 
+    [HideInInspector]
     public GameObject target;
     public int pathFound = 0;
     public bool goalReached = false;
     public bool initialized;
+    [HideInInspector]
     public AStarUnit unit;
+    [HideInInspector]
     public Animator animator;
 
     public void Initialize() {
@@ -34,6 +37,7 @@ public class BTMoveTowardsTarget : ABTNode {
         else if (pathFound == 2) {
             //Debug.Log("MoveTowardsTarget || Failure");
             animator.SetBool("Running", false);
+            initialized = false;
             return TaskState.Failure;
         }
         //If we reached our goal return succes.

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SuicideState : State {
+
     public override void EnterState() {
 
     }

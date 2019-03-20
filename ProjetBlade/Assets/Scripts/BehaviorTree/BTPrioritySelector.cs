@@ -6,8 +6,6 @@ using UnityEngine;
 //Thus it will only return failure if all children fail.
 public class BTPrioritySelector : ABTNode {
 
-    public List<ABTNode> childNodes;
-
     public override TaskState Tick() {
         foreach (ABTNode node in childNodes) {
             //If any node succeeds return succes.

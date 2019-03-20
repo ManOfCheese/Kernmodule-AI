@@ -7,27 +7,11 @@ public class AStarUnit : MonoBehaviour {
     public float speed = 20;
     private Vector3[] path;
     private int targetIndex;
+    [HideInInspector]
     public BTMoveTowardsTarget moveTowardsTargetNode;
-    public BTRoot rootNode;
 
     void Start() {
         moveTowardsTargetNode = GetComponent<BTMoveTowardsTarget>();
-        //StartCoroutine(CheckPath());
-        StartCoroutine(CheckBehaviorTree());
-    }
-
-    /*IEnumerator CheckPath() {
-        while (true) {
-            AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-            yield return new WaitForSeconds(1);
-        }
-    }*/
-
-    IEnumerator CheckBehaviorTree() {
-    while (true) {
-            rootNode.StartBT();
-            yield return new WaitForSeconds(1);
-        }
     }
 
     public void RequestPath(Transform target) {

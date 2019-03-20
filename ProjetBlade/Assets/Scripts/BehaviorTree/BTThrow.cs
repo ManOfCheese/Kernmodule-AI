@@ -5,8 +5,11 @@ using UnityEngine;
 //Returns running while throwing and succes after every thrown rock allowing reevaluation after every rock.
 public class BTThrow : ABTNode {
 
+    [HideInInspector]
     public GameObject target;
-    public GameObject rock;
+    [HideInInspector]
+    public GameObject projectile;
+    [HideInInspector]
     public Animator animator;
 
     private bool rockThrown;
@@ -15,7 +18,7 @@ public class BTThrow : ABTNode {
 
     public void Initialize() {
         animator.SetTrigger("RangedAttack");
-        GameObject newRock = Instantiate(rock, transform.position + transform.forward, Quaternion.identity);
+        GameObject newRock = Instantiate(projectile, transform.position + transform.forward, Quaternion.identity);
         newRock.GetComponent<Rigidbody>().velocity = BallisticVel(target.transform);
     }
 

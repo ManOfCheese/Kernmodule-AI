@@ -5,7 +5,7 @@ using UnityEngine;
 //The weighted random selector selects which node to trigger based on a weighted random chance (like 80/20). It returns succes if this node succeeds.
 public class BTWeightedRandomSelector : ABTNode {
 
-    public List<ABTNode> childNodes;
+    [HideInInspector]
     public List<float> chanceWeights; //Must add up to 1;
 
     public override TaskState Tick() {

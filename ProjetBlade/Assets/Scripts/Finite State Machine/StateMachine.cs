@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StateMachine {
+public class StateMachine : MonoBehaviour {
 
     public State CurrentState { get; private set; }
 
-    //Constructor.
-    public StateMachine() {
+    private void Awake() {
         CurrentState = null;
     }
 
@@ -16,10 +15,12 @@ public class StateMachine {
         //If we are in a state.
         if (CurrentState != null) {         
             //Run the ExitState of our current state.
-            CurrentState.ExitState();  
+            CurrentState.ExitState();
+            Debug.Log("Exiting " + CurrentState);
         }
         //Set the current state to be our new state.
-        CurrentState = _newState;           
+        CurrentState = _newState;
+        Debug.Log("Entering " + CurrentState);
         //Run the EnterState of our new state.
         CurrentState.EnterState();     
     }
@@ -36,7 +37,7 @@ public class StateMachine {
 }
 
 //Abstract class containing all the functionality a state should have.
-public abstract class State {
+public abstract class State : MonoBehaviour {
     public abstract void EnterState();
     public abstract void ExitState();
     public abstract void UpdateState();

@@ -7,18 +7,21 @@ public class BTInverter : ABTNode {
 
     public override TaskState Tick() {
         //If the child is succesful return failure.
-        if (childNode.Tick() == TaskState.Succes) {
-            //Debug.Log("Inverter || Failure");
-            return TaskState.Failure;
+        foreach (ABTNode node in childNodes) {
+            if (node.Tick() == TaskState.Succes) {
+                //Debug.Log("Inverter || Failure");
+                taskState = TaskState.Failure;
+            }
+            //If the child fails return succes.
+            else if (node.Tick() == TaskState.Failure) {
+                //Debug.Log("Inverter || Succes");
+                taskState = TaskState.Succes;
+            }
+            else {
+                taskState = node.Tick();
+            }
         }
-        //If the child fails return succes.
-        else if (childNode.Tick() == TaskState.Failure) {
-            //Debug.Log("Inverter || Succes");
-            return TaskState.Succes;
-        }
-        else {
-            return childNode.Tick();
-        }
+        return taskState;
     }
 
 }

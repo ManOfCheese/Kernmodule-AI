@@ -5,7 +5,8 @@ using UnityEngine;
 public class BTRoot : ABTNode {
 
     public void StartBT() {
-        childNode.Tick();
+        foreach (ABTNode node in childNodes) {
+            node.Tick();
+        }
     }
-
 }

@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgressiveState : State {
-    public override void EnterState() {
 
+    private GoblinAgressiveBehaviorTree behaviorTree;
+
+    private void Start() {
+        behaviorTree = GetComponent<GoblinAgressiveBehaviorTree>();
+    }
+
+    public override void EnterState() {
+        behaviorTree.treeActive = true;
+        behaviorTree.StartBehaviorTree();
     }
 
     public override void ExitState() {
-
+        behaviorTree.treeActive = false;
+        behaviorTree.StopBehaviorTree();
     }
 
     public override void UpdateState() {

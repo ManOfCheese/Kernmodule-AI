@@ -6,8 +6,13 @@ public enum TaskState { Succes, Failure, Running };
 
 public abstract class ABTNode : MonoBehaviour {
 
-    public ABTNode childNode;
+    [HideInInspector]
+    public List<ABTNode> childNodes;
+    [HideInInspector]
+    public TaskState taskState;
+    [HideInInspector]
     public bool isRootNode;
+    [HideInInspector]
     public bool isLeafNode;
 
     public virtual TaskState Tick() {

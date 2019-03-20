@@ -6,8 +6,6 @@ using UnityEngine;
 //Only when all child nodes of the sequence have succeeded does it returns succes.
 public class BTSequence : ABTNode {
 
-    public List<ABTNode> childNodes;
-
     public override TaskState Tick() {
         int succesCount = 0;
         //Tick all child nodes.
