@@ -4,6 +4,12 @@ using UnityEngine;
 
 //the inverter returns the reverse of it's childNode.
 public class BTInverter : ABTNode {
+    public BTInverter(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode) {
+        this.childNodes = childNodes;
+        this.blackBoard = blackBoard;
+        this.isLeafNode = isLeafNode;
+        this.isRootNode = isRootNode;
+    }
 
     public override TaskState Tick() {
         //If the child is succesful return failure.
@@ -23,5 +29,4 @@ public class BTInverter : ABTNode {
         }
         return taskState;
     }
-
 }

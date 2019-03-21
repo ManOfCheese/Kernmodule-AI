@@ -4,22 +4,21 @@ using UnityEngine;
 
 //Returns running while throwing and succes after every thrown rock allowing reevaluation after every rock.
 public class BTThrow : ABTNode {
-
-    [HideInInspector]
-    public GameObject target;
-    [HideInInspector]
-    public GameObject projectile;
-    [HideInInspector]
-    public Animator animator;
-
+    private GameObject projectile;
     private bool rockThrown;
     private bool initialized;
 
+    public BTThrow(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile) {
+        this.childNodes = childNodes;
+        this.blackBoard = blackBoard;
+        this.isLeafNode = isLeafNode;
+        this.isRootNode = isRootNode;
+        this.projectile = projectile;
+    }
 
     public void Initialize() {
-        animator.SetTrigger("RangedAttack");
-        GameObject newRock = Instantiate(projectile, transform.position + transform.forward, Quaternion.identity);
-        newRock.GetComponent<Rigidbody>().velocity = BallisticVel(target.transform);
+        blackBoard.animator.SetTrigger("RangedAttack");
+        blackBoard.self.GetComponent<Goblin>().ThrowRock(projectile, blackBoard.target.transform);
     }
 
     public override TaskState Tick() {
@@ -28,12 +27,12 @@ public class BTThrow : ABTNode {
             initialized = true;
         }
         //If the animation is not completed by is playing return running.
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinRangedAttack")) {
+        if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinRangedAttack")) {
             //Debug.Log("Throw || Running");
             return TaskState.Running;
         }
         //If the animation has been completed return succes.
-        else if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f) {
+        else if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f) {
             initialized = false;
             //Debug.Log("Throw || Succes");
             return TaskState.Succes;
@@ -41,16 +40,5 @@ public class BTThrow : ABTNode {
         initialized = false;
         Debug.Log("Throw || Failure");
         return TaskState.Failure;
-    }
-
-    Vector3 BallisticVel(Transform target) {
-        Vector3 dir = target.position - transform.position; // get target direction
-        float h = dir.y;  // get height difference
-        dir.y = 0;  // retain only the horizontal direction
-        float dist = dir.magnitude;  // get horizontal distance
-        dir.y = dist;  // set elevation to 45 degrees
-        dist += h;  // correct for different heights
-        float vel = Mathf.Sqrt(dist * Physics.gravity.magnitude);
-        return vel * dir.normalized;  // returns Vector3 velocity
     }
 }

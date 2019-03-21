@@ -7,12 +7,7 @@ public class AStarUnit : MonoBehaviour {
     public float speed = 20;
     private Vector3[] path;
     private int targetIndex;
-    [HideInInspector]
     public BTMoveTowardsTarget moveTowardsTargetNode;
-
-    void Start() {
-        moveTowardsTargetNode = GetComponent<BTMoveTowardsTarget>();
-    }
 
     public void RequestPath(Transform target) {
         AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
@@ -20,7 +15,6 @@ public class AStarUnit : MonoBehaviour {
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
         if (pathSuccessful) {
-            Debug.Log("Pathfinding Succesful");
             moveTowardsTargetNode.pathFound = 1;
             path = newPath;
             targetIndex = 0;

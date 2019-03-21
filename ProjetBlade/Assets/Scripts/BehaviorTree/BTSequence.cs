@@ -5,6 +5,12 @@ using UnityEngine;
 //The sequence node will run through all its children returning failure if any of them fails, and running if any of them is still running.
 //Only when all child nodes of the sequence have succeeded does it returns succes.
 public class BTSequence : ABTNode {
+    public BTSequence(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode) {
+        this.childNodes = childNodes;
+        this.blackBoard = blackBoard;
+        this.isLeafNode = isLeafNode;
+        this.isRootNode = isRootNode;
+    }
 
     public override TaskState Tick() {
         int succesCount = 0;
@@ -35,5 +41,4 @@ public class BTSequence : ABTNode {
             return TaskState.Failure;
         }
     }
-
 }

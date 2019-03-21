@@ -4,19 +4,14 @@ using UnityEngine;
 
 public enum TaskState { Succes, Failure, Running };
 
-public abstract class ABTNode : MonoBehaviour {
-
-    [HideInInspector]
-    public List<ABTNode> childNodes;
-    [HideInInspector]
+public abstract class ABTNode {
+    protected List<ABTNode> childNodes;
+    protected BlackBoard blackBoard;
+    protected bool isRootNode;
+    protected bool isLeafNode;
     public TaskState taskState;
-    [HideInInspector]
-    public bool isRootNode;
-    [HideInInspector]
-    public bool isLeafNode;
 
     public virtual TaskState Tick() {
         return TaskState.Failure;
     }
-
 }

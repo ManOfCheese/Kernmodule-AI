@@ -3,24 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : MonoBehaviour {
+    public BlackBoard blackBoard;
 
-    public float behaviorTreeRecalculationDelay;
-    public float MeleeRange;
-    public float moveToCommanderRange;
-    public float viewAngle;
-    public int health;
-    public int suicidalThreshold;
-
-    //These functions must be predefined because they are immediately requested by the behavior trees.
-    public AStarUnit unit;
-    public BoidAgent boidUnit;
-    public Animator animator;
-    public GameObject moveTarget;
-    public GameObject attackTarget;
-    public GameObject rock;
-    public GameObject dynamite;
-    public List<float> chanceWeights;
-
+    //States.
     private StateMachine stateMachine;
     private AgressiveState agressiveState;
     private DefensiveState defensiveState;
@@ -32,11 +17,10 @@ public class Goblin : MonoBehaviour {
         agressiveState = GetComponent<AgressiveState>();
         defensiveState = GetComponent<DefensiveState>();
         swarmState = GetComponent<SwarmState>();
-        swarmState.AStarUnit = unit;
+        swarmState.AStarUnit = blackBoard.unit;
         swarmState.boidUnit = GetComponent<BoidAgent>();
         suicidalState = GetComponent<SuicideState>();
-        unit = this.GetComponent<AStarUnit>();
-        animator = transform.GetComponentInChildren<Animator>();
+
     }
 
     public void EnterAgressiveState() {
@@ -61,11 +45,27 @@ public class Goblin : MonoBehaviour {
     }
 
     public void RecieveDamage(int amount) {
-        health -= amount;
+        blackBoard.health -= amount;
+    }
+
+    public void ThrowRock(GameObject projectile, Transform target) {
+        GameObject newRock = Instantiate(projectile, transform.position + transform.forward, Quaternion.identity);
+        newRock.GetComponent<Rigidbody>().velocity = BallisticVel(target);
+    }
+
+    Vector3 BallisticVel(Transform target) {
+        Vector3 dir = target.position - transform.position; // get target direction
+        float h = dir.y;  // get height difference
+        dir.y = 0;  // retain only the horizontal direction
+        float dist = dir.magnitude;  // get horizontal distance
+        dir.y = dist;  // set elevation to 45 degrees
+        dist += h;  // correct for different heights
+        float vel = Mathf.Sqrt(dist * Physics.gravity.magnitude);
+        return vel * dir.normalized;  // returns Vector3 velocity
     }
 
     private void Update() {
-        if (health < suicidalThreshold) {
+        if (blackBoard.health < blackBoard.suicidalThreshold) {
             stateMachine.ChangeState(suicidalState);
         }
     }
