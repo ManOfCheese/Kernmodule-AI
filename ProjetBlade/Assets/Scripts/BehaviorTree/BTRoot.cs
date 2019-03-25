@@ -11,6 +11,10 @@ public class BTRoot : ABTNode {
     }
 
     public void StartBT() {
+        if (childNodes == null) {
+            Debug.LogError("BehaviorTree has no children");
+        }
+
         foreach (ABTNode node in childNodes) {
             node.Tick();
         }

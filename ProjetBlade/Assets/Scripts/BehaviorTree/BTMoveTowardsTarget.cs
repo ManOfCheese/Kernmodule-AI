@@ -8,11 +8,14 @@ public class BTMoveTowardsTarget : ABTNode {
     public bool goalReached = false;
     public bool initialized;
 
-    public BTMoveTowardsTarget(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode) {
+    private string targetKeyword;
+
+    public BTMoveTowardsTarget(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
         this.isRootNode = isRootNode;
+        this.targetKeyword = targetKeyword;
     }
 
     public void Initialize() {
@@ -24,6 +27,8 @@ public class BTMoveTowardsTarget : ABTNode {
     }
 
     public override TaskState Tick() {
+        blackBoard.SetTarget(targetKeyword);
+
         if (!initialized) {
             Initialize();
             initialized = true;

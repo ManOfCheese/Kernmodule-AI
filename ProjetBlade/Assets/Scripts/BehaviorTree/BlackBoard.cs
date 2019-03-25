@@ -22,6 +22,24 @@ public class BlackBoard : MonoBehaviour {
     public GameObject rock;
     public GameObject dynamite;
 
+    public void SetTarget(string targetType) {
+        if (targetType == "MoveTarget") {
+            target = moveTarget;
+        }
+        else if (targetType == "AttackTarget") {
+            target = attackTarget;
+        }
+    }
+
+    public void SetRange(string rangeType) {
+        if (rangeType == "MeleeRange") {
+            range = MeleeRange;
+        }
+        else if (rangeType == "MoveRange") {
+            range = moveToCommanderRange;
+        }
+    }
+
     [HideInInspector] public GameObject target;
     [HideInInspector] public float range;
 }

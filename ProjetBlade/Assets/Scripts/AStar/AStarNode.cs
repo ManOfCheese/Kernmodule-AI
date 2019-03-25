@@ -4,6 +4,21 @@ using System.Collections;
 public class AStarNode : IHeapItem<AStarNode> {
 
     public bool walkable;
+    private bool unitOnNode = false;
+    public bool UnitOnNode {
+        get {
+            return unitOnNode;
+        }
+        set {
+            unitOnNode = value;
+            if (unitOnNode == true) {
+                aStarGrid.unitNodes.Add(this);
+            }
+            else if (unitOnNode == false) {
+                aStarGrid.unitNodes.Remove(this);
+            }
+        }
+    }
     public Vector3 worldPosition;
     public int gridX;
     public int gridY;
@@ -11,13 +26,15 @@ public class AStarNode : IHeapItem<AStarNode> {
     public int gCost;
     public int hCost;
     public AStarNode parent;
-    int heapIndex;
+    private int heapIndex;
+    private AStarGrid aStarGrid;
 
-    public AStarNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY) {
-        walkable = _walkable;
-        worldPosition = _worldPos;
-        gridX = _gridX;
-        gridY = _gridY;
+    public AStarNode(AStarGrid aStarGrid, bool walkable, Vector3 worldPos, int gridX, int gridY) {
+        this.aStarGrid = aStarGrid;
+        this.walkable = walkable;
+        this.worldPosition = worldPos;
+        this.gridX = gridX;
+        this.gridY = gridY;
     }
 
     public int fCost {

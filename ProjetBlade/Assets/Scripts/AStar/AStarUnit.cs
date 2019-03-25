@@ -5,12 +5,19 @@ public class AStarUnit : MonoBehaviour {
 
     public Transform target;
     public float speed = 20;
+    public BTMoveTowardsTarget moveTowardsTargetNode;
+
+    private AStarGrid aStarGrid;
     private Vector3[] path;
     private int targetIndex;
-    public BTMoveTowardsTarget moveTowardsTargetNode;
+
+    private void Start() {
+        aStarGrid = GameObject.Find("A*").GetComponent<AStarGrid>();
+    }
 
     public void RequestPath(Transform target) {
         AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
+        aStarGrid.NodeFromWorldPoint(transform.position).UnitOnNode = true;
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
@@ -41,6 +48,7 @@ public class AStarUnit : MonoBehaviour {
                     currentWaypoint = path[targetIndex];
                 }
 
+                aStarGrid.NodeFromWorldPoint(transform.position).UnitOnNode = true;
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
                 yield return null;
             }

@@ -25,8 +25,12 @@ public class AStarPathfinding : MonoBehaviour {
 
         AStarNode startNode = grid.NodeFromWorldPoint(startPos);
         AStarNode targetNode = grid.NodeFromWorldPoint(targetPos);
+        //If the targetNode is not walkable get a walkable neighbor.
+        if (!targetNode.walkable) {
+            targetNode = grid.FindReachableNeigbor(targetNode);
+        }
 
-        if (startNode.walkable && targetNode.walkable) {
+        if (startNode.walkable && targetNode.walkable || startNode.UnitOnNode && targetNode.walkable) {
             Heap<AStarNode> openSet = new Heap<AStarNode>(grid.MaxSize);
             HashSet<AStarNode> closedSet = new HashSet<AStarNode>();
             openSet.Add(startNode);

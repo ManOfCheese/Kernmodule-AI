@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 608131318}
   - component: {fileID: 608131317}
   - component: {fileID: 608131316}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1963,7 +1963,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1709186100}
-  - component: {fileID: 1709186099}
+  - component: {fileID: 1709186103}
   - component: {fileID: 1709186101}
   - component: {fileID: 1709186141}
   - component: {fileID: 1709186140}
@@ -1971,10 +1971,11 @@ GameObject:
   - component: {fileID: 1709186138}
   - component: {fileID: 1709186137}
   - component: {fileID: 1709186136}
+  - component: {fileID: 1709186099}
   - component: {fileID: 1709186135}
   - component: {fileID: 1709186115}
   - component: {fileID: 1709186102}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1993,23 +1994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04211fba7d68cee41888f63fc6b079e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviorTreeRecalculationDelay: 0.5
-  MeleeRange: 5
-  moveToCommanderRange: 15
-  viewAngle: 90
-  health: 100
-  suicidalThreshold: 10
-  unit: {fileID: 1709186101}
-  boidUnit: {fileID: 0}
-  animator: {fileID: 608131316}
-  moveTarget: {fileID: 1939015485}
-  attackTarget: {fileID: 1282784805}
-  rock: {fileID: 6870201903507124964, guid: 2b5957c4d3ff6d94fb9fa4b0569938e5, type: 3}
-  dynamite: {fileID: 2572406954431572062, guid: 2fc6b5eb3d347144f92815ec7f2ae688,
-    type: 3}
-  chanceWeights:
-  - 0.2
-  - 1
+  blackBoard: {fileID: 1709186103}
 --- !u!4 &1709186100
 Transform:
   m_ObjectHideFlags: 0
@@ -2055,6 +2040,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &1709186103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709186098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac200b15b58c234fad696a67ce6b41a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviorTreeRecalculationDelay: 0.5
+  MeleeRange: 5
+  moveToCommanderRange: 15
+  viewAngle: 90
+  health: 100
+  suicidalThreshold: 10
+  chanceWeights:
+  - 0.2
+  - 1
+  unit: {fileID: 1709186101}
+  boidUnit: {fileID: 1709186141}
+  animator: {fileID: 608131316}
+  self: {fileID: 1709186098}
+  moveTarget: {fileID: 1939015485}
+  attackTarget: {fileID: 1282784805}
+  rock: {fileID: 6870201903507124964, guid: 2b5957c4d3ff6d94fb9fa4b0569938e5, type: 3}
+  dynamite: {fileID: 2572406954431572062, guid: 2fc6b5eb3d347144f92815ec7f2ae688,
+    type: 3}
+  target: {fileID: 0}
+  range: 0
 --- !u!114 &1709186115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2068,6 +2085,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeActive: 0
+  blackBoard: {fileID: 1709186103}
 --- !u!114 &1709186135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2081,6 +2099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treeActive: 0
+  blackBoard: {fileID: 1709186103}
 --- !u!114 &1709186136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2093,8 +2112,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b5b797d7fc8d2f4c8721065ae7263cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AStarUnit: {fileID: 0}
-  boidUnit: {fileID: 0}
+  AStarUnit: {fileID: 1709186101}
+  boidUnit: {fileID: 1709186141}
 --- !u!114 &1709186137
 MonoBehaviour:
   m_ObjectHideFlags: 0

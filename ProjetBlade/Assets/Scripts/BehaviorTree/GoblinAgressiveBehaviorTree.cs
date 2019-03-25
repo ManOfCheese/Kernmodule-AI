@@ -36,24 +36,29 @@ public class GoblinAgressiveBehaviorTree : MonoBehaviour {
 
         //Instiate the nodes of the tree passing their children into the constructor.
         //Additionaly if a node has no children set isLeafNode to true.
-        rootNode = new BTRoot(new List<ABTNode>() {prioritySelectorNode}, blackBoard, false, true);
-        prioritySelectorNode = new BTPrioritySelector(new List<ABTNode>() { sequenceNode, sequenceNode2, sequenceNode3 }, blackBoard, false, false);
-        sequenceNode = new BTSequence(new List<ABTNode>() { inverterNode, inverterNode2, moveTowardsTargetNode }, blackBoard, false, false);
+        amInRangeNode = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "MeleeRange");
         inverterNode = new BTInverter(new List<ABTNode>() { amInRangeNode }, blackBoard, false, false);
-        amInRangeNode = new BTAmInRange(null, blackBoard, true, false);
+        amSeenNode = new BTAmSeen(null, blackBoard, true, false, "AttackTarget");
         inverterNode2 = new BTInverter(new List<ABTNode>() { amSeenNode }, blackBoard, false, false);
-        amSeenNode = new BTAmSeen(null, blackBoard, true, false);
-        moveTowardsTargetNode = new BTMoveTowardsTarget(null, blackBoard, false, false);
-        sequenceNode2 = new BTSequence(new List<ABTNode>() { inverterNode3, amSeenNode2, weightedRandomSelectorNode }, blackBoard, false, false);
+        moveTowardsTargetNode = new BTMoveTowardsTarget(null, blackBoard, false, false, "AttackTarget");
+        
+        amInRangeNode2 = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "MeleeRange");
         inverterNode3 = new BTInverter(new List<ABTNode>() { amInRangeNode2 }, blackBoard, false, false);
-        amInRangeNode2 = new BTAmInRange(null, blackBoard, true, false);
-        amSeenNode2 = new BTAmSeen(null, blackBoard, false, false);
+        amSeenNode2 = new BTAmSeen(null, blackBoard, false, false, "AttackTarget");
+
+        throwNode = new BTThrow(null, blackBoard, true, false, blackBoard.rock, "AttackTarget");
+        throwNode2 = new BTThrow(null, blackBoard, true, false, blackBoard.dynamite, "AttackTarget");
         weightedRandomSelectorNode = new BTWeightedRandomSelector(new List<ABTNode>() { throwNode, throwNode2 }, blackBoard, false, false);
-        throwNode = new BTThrow(null, blackBoard, true, false, blackBoard.rock);
-        throwNode2 = new BTThrow(null, blackBoard, true, false, blackBoard.dynamite);
-        sequenceNode3 = new BTSequence(new List<ABTNode>() { amInRangeNode3, meleeAttackNode }, blackBoard, false, false);
-        amInRangeNode3 = new BTAmInRange(null, blackBoard, true, false);
+
+        amInRangeNode3 = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "MeleeRange");
         meleeAttackNode = new BTMeleeAttack(null, blackBoard, true, false);
+
+        sequenceNode3 = new BTSequence(new List<ABTNode>() { amInRangeNode3, meleeAttackNode }, blackBoard, false, false);
+        sequenceNode2 = new BTSequence(new List<ABTNode>() { inverterNode3, amSeenNode2, weightedRandomSelectorNode }, blackBoard, false, false);
+        sequenceNode = new BTSequence(new List<ABTNode>() { inverterNode, inverterNode2, moveTowardsTargetNode }, blackBoard, false, false);
+
+        prioritySelectorNode = new BTPrioritySelector(new List<ABTNode>() { sequenceNode, sequenceNode2, sequenceNode3 }, blackBoard, false, false);
+        rootNode = new BTRoot(new List<ABTNode>() { prioritySelectorNode }, blackBoard, false, true);
 
         //Assign A* variables.
         blackBoard.unit.moveTowardsTargetNode = moveTowardsTargetNode;

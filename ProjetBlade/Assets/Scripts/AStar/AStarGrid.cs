@@ -8,16 +8,30 @@ public class AStarGrid : MonoBehaviour {
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
-    AStarNode[,] grid;
+    public List<AStarNode> unitNodes;
 
-    float nodeDiameter;
-    int gridSizeX, gridSizeY;
+    private AStarNode[,] grid;
+    private float nodeDiameter;
+    private int gridSizeX, gridSizeY;
 
     void Awake() {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
+        unitNodes = new List<AStarNode>();
         CreateGrid();
+    }
+
+    private void Update() {
+        //Early return, do not update if there are no nodes occupied by units.
+        if (unitNodes == null) { return; }
+
+        //Check nodes with units on them to see if they are still unwalkable or if the unit has left them.
+        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        foreach (AStarNode node in unitNodes) {
+            Vector3 worldPoint = worldBottomLeft + Vector3.right * (node.gridX * nodeDiameter + nodeRadius) + Vector3.forward * (node.gridY * nodeDiameter + nodeRadius);
+            node.walkable = !(Physics.CheckSphere(worldPoint, nodeRadius / 0.1f, unwalkableMask));
+        }
     }
 
     public int MaxSize {
@@ -26,7 +40,7 @@ public class AStarGrid : MonoBehaviour {
         }
     }
 
-    void CreateGrid() {
+    private void CreateGrid() {
         grid = new AStarNode[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
@@ -34,7 +48,7 @@ public class AStarGrid : MonoBehaviour {
             for (int y = 0; y < gridSizeY; y++) {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                grid[x, y] = new AStarNode(walkable, worldPoint, x, y);
+                grid[x, y] = new AStarNode(this, walkable, worldPoint, x, y);
             }
         }
     }
@@ -69,6 +83,17 @@ public class AStarGrid : MonoBehaviour {
         int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
         int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
         return grid[x, y];
+    }
+
+    public AStarNode FindReachableNeigbor(AStarNode node) {
+        AStarNode walkableNeighbor = null;
+        foreach (AStarNode neighbor in GetNeighbours(node)) {
+            if (neighbor.walkable) {
+                walkableNeighbor = node;
+                break;
+            }
+        }
+        return walkableNeighbor;
     }
 
     void OnDrawGizmos() {
