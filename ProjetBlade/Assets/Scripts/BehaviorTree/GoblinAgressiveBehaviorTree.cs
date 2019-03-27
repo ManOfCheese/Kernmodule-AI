@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoblinAgressiveBehaviorTree : MonoBehaviour {
     public bool treeActive = false;
-    public Blackboard blackBoard;
+    public BlackBoard blackBoard;
 
     private BTRoot rootNode;
     private BTPrioritySelector prioritySelectorNode;
@@ -31,7 +31,7 @@ public class GoblinAgressiveBehaviorTree : MonoBehaviour {
     private Goblin goblin;
 
     // Start is called before the first frame update
-    void Awake() {
+    void Start() {
         goblin = this.GetComponent<Goblin>();
 
         //Instiate the nodes of the tree passing their children into the constructor.
@@ -62,7 +62,6 @@ public class GoblinAgressiveBehaviorTree : MonoBehaviour {
 
         //Assign A* variables.
         blackBoard.unit.moveTowardsTargetNode = moveTowardsTargetNode;
-        blackBoard.rootNode = rootNode;
     }
 
     public void StartBehaviorTree() {
@@ -75,6 +74,7 @@ public class GoblinAgressiveBehaviorTree : MonoBehaviour {
 
     public IEnumerator CheckBehaviorTree() {
         while (treeActive) {
+            Debug.Log("Checking Agressive Root");
             rootNode.StartBT();
             yield return new WaitForSeconds(blackBoard.behaviorTreeRecalculationDelay);
         }

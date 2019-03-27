@@ -9,7 +9,7 @@ public class BTThrow : ABTNode {
     private bool initialized;
     private string targetKeyword;
 
-    public BTThrow(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile, string targetKeyword) {
+    public BTThrow(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile, string targetKeyword) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
@@ -32,15 +32,17 @@ public class BTThrow : ABTNode {
         }
         //If the animation is not completed by is playing return running.
         if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinRangedAttack")) {
-            blackBoard.rootNode.runningNode = this;
+            //Debug.Log("Throw || Running");
             return TaskState.Running;
         }
         //If the animation has been completed return succes.
         else if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1f) {
             initialized = false;
+            //Debug.Log("Throw || Succes");
             return TaskState.Succes;
         }
         initialized = false;
+        Debug.Log("Throw || Failure");
         return TaskState.Failure;
     }
 }

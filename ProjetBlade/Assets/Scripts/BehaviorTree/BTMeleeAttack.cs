@@ -6,7 +6,7 @@ using UnityEngine;
 public class BTMeleeAttack : ABTNode {
     private bool initialized;
 
-    public BTMeleeAttack(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode) {
+    public BTMeleeAttack(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
@@ -26,13 +26,15 @@ public class BTMeleeAttack : ABTNode {
         //If the animation has been completed return succes.
         if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).length > blackBoard.animator.GetCurrentAnimatorStateInfo(0).normalizedTime) {
             initialized = false;
+            //Debug.Log("MeleeAttack || Succes");
             return TaskState.Succes;
         }
         //If the animation is not completed by is playing return running.
         else if (blackBoard.animator.GetCurrentAnimatorStateInfo(0).IsName("GoblinMeleeAttack")) {
-            blackBoard.rootNode.runningNode = this;
+            //Debug.Log("MeleeAttack || Running");
             return TaskState.Running;
         }
+        //Debug.Log("MeleeAttack || Failure");
         blackBoard.animator.SetBool("MeleeAttack", false);
         initialized = false;
         return TaskState.Failure;

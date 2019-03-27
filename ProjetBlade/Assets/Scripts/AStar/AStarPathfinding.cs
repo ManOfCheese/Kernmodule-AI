@@ -5,13 +5,14 @@ using System;
 
 public class AStarPathfinding : MonoBehaviour {
 
-    private AStarPathRequestManager requestManager;
-    private AStarGrid grid;
+    AStarPathRequestManager requestManager;
+    AStarGrid grid;
 
     void Awake() {
         requestManager = GetComponent<AStarPathRequestManager>();
         grid = GetComponent<AStarGrid>();
     }
+
 
     public void StartFindPath(Vector3 startPos, Vector3 targetPos) {
         StartCoroutine(FindPath(startPos, targetPos));
@@ -24,8 +25,12 @@ public class AStarPathfinding : MonoBehaviour {
 
         AStarNode startNode = grid.NodeFromWorldPoint(startPos);
         AStarNode targetNode = grid.NodeFromWorldPoint(targetPos);
+        //If the targetNode is not walkable get a walkable neighbor.
+        if (!targetNode.walkable) {
+            targetNode = grid.FindReachableNeigbor(targetNode);
+        }
 
-        if (startNode.walkable && targetNode.walkable) {
+        if (startNode.walkable && targetNode.walkable || startNode.UnitOnNode && targetNode.walkable) {
             Heap<AStarNode> openSet = new Heap<AStarNode>(grid.MaxSize);
             HashSet<AStarNode> closedSet = new HashSet<AStarNode>();
             openSet.Add(startNode);

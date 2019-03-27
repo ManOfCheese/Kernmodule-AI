@@ -6,7 +6,7 @@ public class AgressiveState : State {
 
     private GoblinAgressiveBehaviorTree behaviorTree;
 
-    private void Awake() {
+    private void Start() {
         behaviorTree = GetComponent<GoblinAgressiveBehaviorTree>();
     }
 

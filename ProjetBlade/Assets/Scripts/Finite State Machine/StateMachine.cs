@@ -16,9 +16,11 @@ public class StateMachine : MonoBehaviour {
         if (CurrentState != null) {         
             //Run the ExitState of our current state.
             CurrentState.ExitState();
+            Debug.Log("Exiting " + CurrentState);
         }
         //Set the current state to be our new state.
         CurrentState = _newState;
+        Debug.Log("Entering " + CurrentState);
         //Run the EnterState of our new state.
         CurrentState.EnterState();     
     }

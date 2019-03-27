@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GoblinDefensiveBehaviorTree : MonoBehaviour {
     public bool treeActive = false;
-    public Blackboard blackBoard;
+    public BlackBoard blackBoard;
 
     private BTRoot rootNode;
     private BTPrioritySelector prioritySelectorNode;
@@ -27,23 +27,23 @@ public class GoblinDefensiveBehaviorTree : MonoBehaviour {
 
     private Goblin goblin;
 
-    private void Awake() {
+    private void Start() {
         goblin = this.GetComponent<Goblin>();
 
         //Instiate the nodes of the tree passing their children into the constructor.
         //Additionaly if a node has no children set isLeafNode to true.
-        moveTowardsTargetNode = new BTMoveTowardsTarget(null, blackBoard, true, false, "MoveTarget");
         amInRangeNode = new BTAmInRange(null, blackBoard, true, false, "MoveTarget", "MoveRange");
         inverterNode = new BTInverter(new List<ABTNode>() { amInRangeNode }, blackBoard, false, false);
+        moveTowardsTargetNode = new BTMoveTowardsTarget(null, blackBoard, true, false, "MoveTarget");
 
-        meleeAttackNode = new BTMeleeAttack(null, blackBoard, true, false);
         amInRangeNode2 = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "AttackRange");
+        meleeAttackNode = new BTMeleeAttack(null, blackBoard, true, false);
 
+        amInRangeNode3 = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "AttackRange");
+        inverterNode2 = new BTInverter(new List<ABTNode>() { amInRangeNode3 }, blackBoard, false, false);
         throwNode = new BTThrow(null, blackBoard, true, false, blackBoard.rock, "AttackTarget");
         throwNode2 = new BTThrow(null, blackBoard, true, false, blackBoard.dynamite, "AttackTarget");
         weightedRandomSelectorNode = new BTWeightedRandomSelector(new List<ABTNode>() { throwNode, throwNode2 }, blackBoard, false, false);
-        amInRangeNode3 = new BTAmInRange(null, blackBoard, true, false, "AttackTarget", "AttackRange");
-        inverterNode2 = new BTInverter(new List<ABTNode>() { amInRangeNode3 }, blackBoard, false, false);
 
         sequenceNode3 = new BTSequence(new List<ABTNode>() { inverterNode2, weightedRandomSelectorNode }, blackBoard, false, false);
         sequenceNode2 = new BTSequence(new List<ABTNode>() { amInRangeNode2, meleeAttackNode }, blackBoard, false, false);
@@ -54,7 +54,6 @@ public class GoblinDefensiveBehaviorTree : MonoBehaviour {
 
         //Assign A* variables.
         blackBoard.unit.moveTowardsTargetNode = moveTowardsTargetNode;
-        blackBoard.rootNode = rootNode;
     }
 
     public void StartBehaviorTree() {
@@ -67,6 +66,7 @@ public class GoblinDefensiveBehaviorTree : MonoBehaviour {
 
     public IEnumerator CheckBehaviorTree() {
         while (treeActive) {
+            Debug.Log("Checking Defensive Root");
             rootNode.StartBT();
             yield return new WaitForSeconds(blackBoard.behaviorTreeRecalculationDelay);
         }
