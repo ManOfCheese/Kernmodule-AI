@@ -17,7 +17,6 @@ public class AStarUnit : MonoBehaviour {
 
     public void RequestPath(Transform target) {
         AStarPathRequestManager.RequestPath(transform.position, target.position, OnPathFound);
-        aStarGrid.NodeFromWorldPoint(transform.position).UnitOnNode = true;
     }
 
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
@@ -34,9 +33,11 @@ public class AStarUnit : MonoBehaviour {
     }
 
     IEnumerator FollowPath() {
-        Debug.Log("Following Path");
         if (path != null) {
             Vector3 currentWaypoint = path[0];
+            for (int i = 0; i < path.Length; i++) {
+                path[i] = new Vector3(path[i].x, transform.position.y, path[i].z);
+            }
 
             while (true) {
                 if (transform.position == currentWaypoint) {
@@ -47,8 +48,6 @@ public class AStarUnit : MonoBehaviour {
                     }
                     currentWaypoint = path[targetIndex];
                 }
-
-                aStarGrid.NodeFromWorldPoint(transform.position).UnitOnNode = true;
                 transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
                 yield return null;
             }

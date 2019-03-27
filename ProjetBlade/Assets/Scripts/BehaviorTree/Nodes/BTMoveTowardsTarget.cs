@@ -10,7 +10,7 @@ public class BTMoveTowardsTarget : ABTNode {
 
     private string targetKeyword;
 
-    public BTMoveTowardsTarget(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword) {
+    public BTMoveTowardsTarget(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
@@ -35,6 +35,7 @@ public class BTMoveTowardsTarget : ABTNode {
         }
         //If the goal is reached and there is not not a path (i know that's confusing) return running.
         if (goalReached == false && pathFound != 2) {
+            blackBoard.rootNode.runningNode = this;
             return TaskState.Running;
         }
         //If there is not a path return failure.

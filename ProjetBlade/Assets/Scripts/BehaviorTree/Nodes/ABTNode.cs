@@ -6,7 +6,7 @@ public enum TaskState { Succes, Failure, Running };
 
 public abstract class ABTNode {
     protected List<ABTNode> childNodes;
-    protected BlackBoard blackBoard;
+    protected Blackboard blackBoard;
     protected bool isRootNode;
     protected bool isLeafNode;
     public TaskState taskState;

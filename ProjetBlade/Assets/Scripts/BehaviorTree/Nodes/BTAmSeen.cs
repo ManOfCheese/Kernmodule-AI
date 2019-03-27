@@ -6,7 +6,7 @@ using UnityEngine;
 public class BTAmSeen : ABTNode {
     private string targetKeyword;
 
-    public BTAmSeen(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword) {
+    public BTAmSeen(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
