@@ -8,26 +8,38 @@ public class AStarGrid : MonoBehaviour {
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
     public float nodeRadius;
+<<<<<<< HEAD
     public List<AStarNode> unitNodes;
     public int MaxSize {
         get {
             return gridSizeX * gridSizeY;
         }
     }
+=======
+    AStarNode[,] grid;
+>>>>>>> parent of 6a1702b... Bugfixes and making player and units unwalkable on the grid.
 
-    private AStarNode[,] grid;
-    private float nodeDiameter;
-    private int gridSizeX, gridSizeY;
+    float nodeDiameter;
+    int gridSizeX, gridSizeY;
 
     void Awake() {
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
-        unitNodes = new List<AStarNode>();
         CreateGrid();
     }
 
+<<<<<<< HEAD
     private void CreateGrid() {
+=======
+    public int MaxSize {
+        get {
+            return gridSizeX * gridSizeY;
+        }
+    }
+
+    void CreateGrid() {
+>>>>>>> parent of 6a1702b... Bugfixes and making player and units unwalkable on the grid.
         grid = new AStarNode[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 

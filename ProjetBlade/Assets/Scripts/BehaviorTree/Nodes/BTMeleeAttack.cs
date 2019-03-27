@@ -8,7 +8,6 @@ public class BTMeleeAttack : ABTNode {
 
     public BTMeleeAttack(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode) {
         this.childNodes = childNodes;
-        this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
         this.isRootNode = isRootNode;
     }

@@ -11,6 +11,7 @@ public class AStarNode : IHeapItem<AStarNode> {
     public int gCost;
     public int hCost;
     public AStarNode parent;
+<<<<<<< HEAD
     private int heapIndex;
 
     public AStarNode(bool walkable, Vector3 worldPos, int gridX, int gridY) {
@@ -18,6 +19,15 @@ public class AStarNode : IHeapItem<AStarNode> {
         this.worldPosition = worldPos;
         this.gridX = gridX;
         this.gridY = gridY;
+=======
+    int heapIndex;
+
+    public AStarNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY) {
+        walkable = _walkable;
+        worldPosition = _worldPos;
+        gridX = _gridX;
+        gridY = _gridY;
+>>>>>>> parent of 6a1702b... Bugfixes and making player and units unwalkable on the grid.
     }
 
     public int fCost {
