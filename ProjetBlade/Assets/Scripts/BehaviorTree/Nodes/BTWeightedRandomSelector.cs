@@ -5,7 +5,7 @@ using UnityEngine;
 //The weighted random selector selects which node to trigger based on a weighted random chance (like 80/20). It returns succes if this node succeeds.
 public class BTWeightedRandomSelector : ABTNode {
 
-    public BTWeightedRandomSelector(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode) {
+    public BTWeightedRandomSelector(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;

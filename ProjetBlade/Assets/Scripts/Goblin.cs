@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : MonoBehaviour {
-    public BlackBoard blackBoard;
+    public Blackboard goblinBlackboard;
 
     //States.
     private StateMachine stateMachine;
@@ -12,40 +12,39 @@ public class Goblin : MonoBehaviour {
     private SwarmState swarmState;
     private SuicideState suicidalState;
 
-    private void Start() {
+    private void Awake() {
         stateMachine = GetComponent<StateMachine>();
         agressiveState = GetComponent<AgressiveState>();
         defensiveState = GetComponent<DefensiveState>();
         swarmState = GetComponent<SwarmState>();
-        swarmState.AStarUnit = blackBoard.unit;
+        swarmState.AStarUnit = goblinBlackboard.unit;
         swarmState.boidUnit = GetComponent<BoidAgent>();
         suicidalState = GetComponent<SuicideState>();
-
     }
 
     public void EnterAgressiveState() {
         if (stateMachine.CurrentState != suicidalState) {
             stateMachine.ChangeState(agressiveState);
-            Debug.Log("Entered Agressive State");
         }
     }
 
     public void EnterDefensiveState() {
         if (stateMachine.CurrentState != suicidalState) {
             stateMachine.ChangeState(defensiveState);
-            Debug.Log("Entered Defensive State");
         }
     }
 
     public void EnterSwarmState() {
         if (stateMachine.CurrentState != suicidalState) {
             stateMachine.ChangeState(swarmState);
-            Debug.Log("Entered Swarm State");
         }
     }
 
     public void RecieveDamage(int amount) {
-        blackBoard.health -= amount;
+        goblinBlackboard.health -= amount;
+        if (goblinBlackboard.health <= 0) {
+            Destroy(this.gameObject);
+        }
     }
 
     public void ThrowRock(GameObject projectile, Transform target) {
@@ -65,7 +64,7 @@ public class Goblin : MonoBehaviour {
     }
 
     private void Update() {
-        if (blackBoard.health < blackBoard.suicidalThreshold) {
+        if (goblinBlackboard.health < goblinBlackboard.suicidalThreshold) {
             stateMachine.ChangeState(suicidalState);
         }
     }

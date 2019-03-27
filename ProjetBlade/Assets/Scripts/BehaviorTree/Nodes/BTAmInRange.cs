@@ -7,7 +7,7 @@ public class BTAmInRange : ABTNode {
     private string rangeKeyword;
     private string targetKeyword;
 
-    public BTAmInRange(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword, string rangeKeyword) {
+    public BTAmInRange(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, string targetKeyword, string rangeKeyword) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;

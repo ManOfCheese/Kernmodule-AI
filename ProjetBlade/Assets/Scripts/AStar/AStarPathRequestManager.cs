@@ -48,6 +48,5 @@ public class AStarPathRequestManager : MonoBehaviour {
             pathEnd = _end;
             callback = _callback;
         }
-
     }
 }
