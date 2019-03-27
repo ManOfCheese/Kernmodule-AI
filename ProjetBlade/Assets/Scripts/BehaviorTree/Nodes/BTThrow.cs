@@ -7,17 +7,15 @@ public class BTThrow : ABTNode {
     private GameObject projectile;
     private bool rockThrown;
     private bool initialized;
+    private string targetKeyword;
 
-<<<<<<< HEAD:ProjetBlade/Assets/Scripts/BehaviorTree/Nodes/BTThrow.cs
     public BTThrow(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile, string targetKeyword) {
-=======
-    public BTThrow(List<ABTNode> childNodes, BlackBoard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile) {
->>>>>>> parent of 6a1702b... Bugfixes and making player and units unwalkable on the grid.:ProjetBlade/Assets/Scripts/BehaviorTree/BTThrow.cs
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
         this.isLeafNode = isLeafNode;
         this.isRootNode = isRootNode;
         this.projectile = projectile;
+        this.targetKeyword = targetKeyword;
     }
 
     public void Initialize() {
@@ -26,6 +24,8 @@ public class BTThrow : ABTNode {
     }
 
     public override TaskState Tick() {
+        blackBoard.SetTarget(targetKeyword);
+
         if (!initialized) {
             Initialize();
             initialized = true;

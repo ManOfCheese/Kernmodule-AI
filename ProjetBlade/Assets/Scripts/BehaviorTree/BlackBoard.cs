@@ -33,7 +33,6 @@ public class Blackboard : MonoBehaviour {
     [HideInInspector] public GameObject target;
     [HideInInspector] public float range;
 
-<<<<<<< HEAD
     public void SetTarget(string targetType) {
         if (targetType == "MoveTarget") {
             target = moveTarget;
@@ -51,8 +50,4 @@ public class Blackboard : MonoBehaviour {
             range = moveToCommanderRange;
         }
     }
-=======
-    [HideInInspector] public GameObject target;
-    [HideInInspector] public float range;
->>>>>>> parent of 6a1702b... Bugfixes and making player and units unwalkable on the grid.
 }
