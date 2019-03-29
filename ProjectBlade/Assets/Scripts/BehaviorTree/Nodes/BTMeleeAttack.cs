@@ -13,6 +13,7 @@ public class BTMeleeAttack : ABTNode {
         this.isRootNode = isRootNode;
     }
 
+    //We use this function and the bool check so that we only trigger the animation once per attack.
     public void Initialize() {
         blackBoard.animator.SetTrigger("MeleeAttack");
     }

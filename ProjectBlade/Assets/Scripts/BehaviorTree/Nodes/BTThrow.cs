@@ -4,10 +4,10 @@ using UnityEngine;
 
 //Returns running while throwing and succes after every thrown rock allowing reevaluation after every rock.
 public class BTThrow : ABTNode {
-    private GameObject projectile;
     private bool rockThrown;
     private bool initialized;
     private string targetKeyword;
+    private GameObject projectile;
 
     public BTThrow(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode, GameObject projectile, string targetKeyword) {
         this.childNodes = childNodes;
@@ -25,7 +25,6 @@ public class BTThrow : ABTNode {
 
     public override TaskState Tick() {
         blackBoard.SetTarget(targetKeyword);
-
         if (!initialized) {
             Initialize();
             initialized = true;
@@ -43,3 +42,4 @@ public class BTThrow : ABTNode {
         return TaskState.Failure;
     }
 }
+

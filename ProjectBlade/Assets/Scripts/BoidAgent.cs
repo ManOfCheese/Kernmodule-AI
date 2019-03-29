@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoidAgent : MonoBehaviour {
-
     public bool debug;
-
     public float desiredSeparation;
     public float neighborRadius;
-
     public float alignmentWeight;
     public float cohesionWeight;
     public float separationWeight;
 
     private Rigidbody rigidBody;
 
-    // Start is called before the first frame update
     void Start() {
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.velocity = new Vector3(Random.value * 2 - 1, Random.value * 2 - 1, Random.value * 2 - 1);
     }
 
-    // Update is called once per frame
     void Update() {
         transform.rotation = Quaternion.LookRotation(rigidBody.velocity);
 
-        //Get all nearby boids.
+        //Get all nearby boids and execute rules.
         List<BoidAgent> boids = GetBoidsInSphere();
         if (boids != null && rigidBody != null) {
             Vector3 alignment = Align(boids) * alignmentWeight * Time.deltaTime;
@@ -75,13 +70,11 @@ public class BoidAgent : MonoBehaviour {
         return (velocity /= (boids.Count - 1)).normalized;
     }
 
+    //Get surrounding boids.
     private List<BoidAgent> GetBoidsInSphere() {
-        //Get surrounding gameObjects.
         Collider[] surroundingColliders = Physics.OverlapSphere(transform.position, 0.1f);
-        //In this list we will store our surrounding boid agents.
         List<BoidAgent> boids = new List<BoidAgent>();
         foreach (Collider collider in surroundingColliders) {
-            //If the object has a BoidAgent componenet add it to the list.
             if (collider.GetComponent<BoidAgent>()) {
                 boids.Add(collider.gameObject.GetComponent<BoidAgent>());
             }
@@ -89,6 +82,7 @@ public class BoidAgent : MonoBehaviour {
         return boids;
     }
 
+    //If we collide with an object on the unwalkable layer move away.
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.layer == 9) {
             rigidBody.velocity *= -1;

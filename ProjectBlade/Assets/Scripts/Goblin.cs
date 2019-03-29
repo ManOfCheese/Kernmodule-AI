@@ -7,22 +7,18 @@ public class Goblin : MonoBehaviour {
 
     //States.
     private StateMachine stateMachine;
-    private IdleState idleState;
     private AgressiveState agressiveState;
     private DefensiveState defensiveState;
     private SwarmState swarmState;
-    private SuicideState suicidalState;
 
     private void Awake() {
         stateMachine = GetComponent<StateMachine>();
-        idleState = GetComponent<IdleState>();
         agressiveState = GetComponent<AgressiveState>();
         Debug.Log(agressiveState);
         defensiveState = GetComponent<DefensiveState>();
         swarmState = GetComponent<SwarmState>();
-        swarmState.AStarUnit = goblinBlackboard.unit;
+        swarmState.aStarUnit = goblinBlackboard.unit;
         swarmState.boidUnit = GetComponent<BoidAgent>();
-        suicidalState = GetComponent<SuicideState>();
     }
 
     public void EnterAgressiveState() {
@@ -58,11 +54,5 @@ public class Goblin : MonoBehaviour {
         dist += h;  // correct for different heights
         float vel = Mathf.Sqrt(dist * Physics.gravity.magnitude);
         return vel * dir.normalized;  // returns Vector3 velocity
-    }
-
-    private void Update() {
-        if (goblinBlackboard.health < goblinBlackboard.suicidalThreshold) {
-            stateMachine.ChangeState(suicidalState);
-        }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AgressiveState : State {
-
     private GoblinAgressiveBehaviorTree behaviorTree;
 
     private void Awake() {

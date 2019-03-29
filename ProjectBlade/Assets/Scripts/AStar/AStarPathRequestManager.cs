@@ -4,20 +4,18 @@ using System.Collections.Generic;
 using System;
 
 public class AStarPathRequestManager : MonoBehaviour {
-
+    private bool isProcessingPath;
+    private AStarPathfinding pathfinding;
     private Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
     private PathRequest currentPathRequest;
-
     private static AStarPathRequestManager instance;
-    private AStarPathfinding pathfinding;
-
-    bool isProcessingPath;
 
     void Awake() {
         instance = this;
         pathfinding = GetComponent<AStarPathfinding>();
     }
 
+    //Requested paths are added to the queue to be processed.
     public static void RequestPath(Vector3 pathStart, Vector3 pathEnd, Action<Vector3[], bool> callback) {
         PathRequest newRequest = new PathRequest(pathStart, pathEnd, callback);
         instance.pathRequestQueue.Enqueue(newRequest);
@@ -25,6 +23,7 @@ public class AStarPathRequestManager : MonoBehaviour {
     }
 
     void TryProcessNext() {
+        //We check paths one at a time using this queue to reduce overhead.
         if (!isProcessingPath && pathRequestQueue.Count > 0) {
             currentPathRequest = pathRequestQueue.Dequeue();
             isProcessingPath = true;
@@ -32,21 +31,23 @@ public class AStarPathRequestManager : MonoBehaviour {
         }
     }
 
+    //Activates the callback and tries to process the next path.
     public void FinishedProcessingPath(Vector3[] path, bool success) {
         currentPathRequest.callback(path, success);
         isProcessingPath = false;
         TryProcessNext();
     }
 
+    //Struct containing all necessary info for a path request.
     struct PathRequest {
         public Vector3 pathStart;
         public Vector3 pathEnd;
         public Action<Vector3[], bool> callback;
 
-        public PathRequest(Vector3 _start, Vector3 _end, Action<Vector3[], bool> _callback) {
-            pathStart = _start;
-            pathEnd = _end;
-            callback = _callback;
+        public PathRequest(Vector3 start, Vector3 end, Action<Vector3[], bool> callback) {
+            this.pathStart = start;
+            this.pathEnd = end;
+            this.callback = callback;
         }
     }
 }

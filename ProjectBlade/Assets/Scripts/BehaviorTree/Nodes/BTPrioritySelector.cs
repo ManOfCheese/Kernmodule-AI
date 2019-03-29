@@ -23,8 +23,6 @@ public class BTPrioritySelector : ABTNode {
                 return TaskState.Running;
             }
         }
-        //Otherwise return failure.
         return TaskState.Failure;
     }
-
 }

@@ -6,10 +6,12 @@ public class Dynamite : MonoBehaviour {
     public int dynamiteDamage;
     public float dynamiteRadius;
 
+    //If we hit the player explode and damage all in range.
     private void OnTriggerEnter(Collider other) {
         if (other.GetComponent<Player>()) {
             Collider[] hits = Physics.OverlapSphere(transform.position, dynamiteRadius);
             foreach (Collider hit in hits) {
+                //Will later be replaced by an IDamagable interface.
                 if (other.GetComponent<Player>()) {
                     other.GetComponent<Player>().RecieveDamage(dynamiteDamage);
                 }
@@ -22,6 +24,7 @@ public class Dynamite : MonoBehaviour {
             }
             Destroy(this.gameObject);
         }
+        //If the dynamite hits the floor explode.
         else {
             if (other.tag == "Floor") {
                 Destroy(this.gameObject);

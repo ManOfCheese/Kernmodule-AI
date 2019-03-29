@@ -17,7 +17,6 @@ public class BTRepeat : ABTNode {
                 Tick();
             }
         }
-        Debug.Log("Sequence || Succes");
         return TaskState.Succes;
     }
 }

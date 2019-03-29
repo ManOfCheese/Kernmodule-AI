@@ -4,6 +4,7 @@ using UnityEngine;
 
 //The AmInRange node returns true when the AI is in range of target, otherwise it returns failure.
 public class BTAmInRange : ABTNode {
+    //These keywords determines which range and target we want to use in making our checks. They are passed into the constructor from the blackboard.
     private string rangeKeyword;
     private string targetKeyword;
 
@@ -19,14 +20,10 @@ public class BTAmInRange : ABTNode {
     public override TaskState Tick() {
         blackBoard.SetRange(rangeKeyword);
         blackBoard.SetTarget(targetKeyword);
-
-        //Check if the target is within range.
         if (Vector3.Distance(blackBoard.self.transform.position, blackBoard.target.transform.position) <= blackBoard.range) {
-            //Debug.Log("AmInRange || Succes");
             return TaskState.Succes;
         }
         else {
-            //Debug.Log("AmInRange || Failure");
             return TaskState.Failure;
         }
     }

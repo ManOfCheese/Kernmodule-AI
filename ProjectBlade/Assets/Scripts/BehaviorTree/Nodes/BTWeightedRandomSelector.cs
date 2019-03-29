@@ -4,7 +4,6 @@ using UnityEngine;
 
 //The weighted random selector selects which node to trigger based on a weighted random chance (like 80/20). It returns succes if this node succeeds.
 public class BTWeightedRandomSelector : ABTNode {
-
     public BTWeightedRandomSelector(List<ABTNode> childNodes, Blackboard blackBoard, bool isLeafNode, bool isRootNode) {
         this.childNodes = childNodes;
         this.blackBoard = blackBoard;
@@ -17,18 +16,15 @@ public class BTWeightedRandomSelector : ABTNode {
         for (int i = 0; i < childNodes.Count; i++) {
             if (i == 0) {
                 if (randomResult < blackBoard.chanceWeights[i]) {
-                    //Debug.Log("WeightedRandomSelector || " + childNodes[i].Tick());
                     return childNodes[i].Tick();
                 }
             }
             else {
                 if (randomResult > blackBoard.chanceWeights[i - 1] && randomResult < blackBoard.chanceWeights[i]) {
-                    //Debug.Log("WeightedRandomSelector || " + childNodes[i].Tick());
                     return childNodes[i].Tick();
                 }
             }
         }
-        Debug.Log("WeightedRandomSelector || No node was ticked");
         return TaskState.Failure;
     }
 }

@@ -14,7 +14,7 @@ public class Blackboard : MonoBehaviour {
     public float moveToCommanderRange;
     public int suicidalThreshold;
     public GameObject moveTarget;
-    //public BoidAgent boidUnit;
+    public BoidAgent boidUnit;
 
     //Bopth:
     public float behaviorTreeRecalculationDelay;
@@ -33,6 +33,7 @@ public class Blackboard : MonoBehaviour {
     [HideInInspector] public GameObject target;
     [HideInInspector] public float range;
 
+    //Switch our current target based wether a node needs to attack the player or defend the commander.
     public void SetTarget(string targetType) {
         if (targetType == "MoveTarget") {
             target = moveTarget;
@@ -42,6 +43,7 @@ public class Blackboard : MonoBehaviour {
         }
     }
 
+    //Switch range depening on wether a node needs to check for range of melee.
     public void SetRange(string rangeType) {
         if (rangeType == "MeleeRange") {
             range = MeleeRange;

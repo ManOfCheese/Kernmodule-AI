@@ -5,7 +5,7 @@ using UnityEngine;
 public class GoblinCommander : MonoBehaviour {
     public Blackboard commanderBlackBoard;
 
-    //States.
+    //States
     private StateMachine stateMachine;
     private AttackState attackState;
     private DefendState defendState;
@@ -19,11 +19,11 @@ public class GoblinCommander : MonoBehaviour {
         attackState = GetComponent<AttackState>();
         defendState = GetComponent<DefendState>();
         battleCryState = GetComponent<BattleCryState>();
-
         EnterAttackState();
     }
 
     private void Update() {
+        //Temporary hardcode for max health.
         if (commanderBlackBoard.health >= 250 && stateMachine.CurrentState != attackState) {
             EnterAttackState();
         }
@@ -44,6 +44,7 @@ public class GoblinCommander : MonoBehaviour {
         }
     }
 
+    //Enter the attacking state for the commander and all his minions.
     public void EnterAttackState() {
         stateMachine.ChangeState(attackState);
         foreach (Goblin goblin in commanderBlackBoard.goblins) {
@@ -51,6 +52,7 @@ public class GoblinCommander : MonoBehaviour {
         }
     }
 
+    //Enter the defend state can only be done twice because of the health regen.
     public void EnterDefendState() {
         if (defendCount < 3) {
             stateMachine.ChangeState(defendState);
@@ -61,6 +63,7 @@ public class GoblinCommander : MonoBehaviour {
         }
     }
 
+    //Enter the battle cry state triggering the boid algorithm in minions.
     public void EnterBattleCryState() {
         stateMachine.ChangeState(battleCryState);
         foreach (Goblin goblin in commanderBlackBoard.goblins) {
@@ -68,11 +71,13 @@ public class GoblinCommander : MonoBehaviour {
         }
     }
 
+    //Take damage, if defending it will store the damage and above a threshold exit the defend state.
     public void RecieveDamage(int amount) {
         commanderBlackBoard.health -= amount;
         if (stateMachine.CurrentState == defendState) {
             damageWhileDefending += amount;
         }
+        //Temporary hardcode for breakthrough damage.
         if (damageWhileDefending >= 30 && stateMachine.CurrentState != attackState) {
             EnterAttackState();
         }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
-    [SerializeField] private int health;
-    [HideInInspector] public Animator swordAnimator;
     public int damageAmount;
+    [HideInInspector] public Animator swordAnimator;
+
+    [SerializeField] private int health;
 
     private void Awake() {
         swordAnimator = GetComponent<Animator>();
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
+        //If we are in the swing animation damage any Goblins we hit (I don't currently have a common class or interface for this so we'll have to do it this way)
         if (swordAnimator.GetCurrentAnimatorStateInfo(0).IsName("SwordSwing")) {
             if (other.gameObject.GetComponent<Goblin>()) {
                 other.gameObject.GetComponent<Goblin>().RecieveDamage(damageAmount);
@@ -28,9 +30,10 @@ public class Player : MonoBehaviour {
         }
     }
 
-
+    //Take damage equal to amount
     public void RecieveDamage(int amount) {
         health -= amount;
+        //If we are dead freeze the game because no game over screen exists.
         if (health <= 0) {
             Time.timeScale = 0;
         }

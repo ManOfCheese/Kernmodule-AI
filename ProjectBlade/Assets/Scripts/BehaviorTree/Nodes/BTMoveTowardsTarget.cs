@@ -4,6 +4,7 @@ using UnityEngine;
 
 //The MoveTowardsTarget node will return running until it has reached its target when it will return succes. If it cannot reach the target it returns failure.
 public class BTMoveTowardsTarget : ABTNode {
+    //0 is no path found, 1 is busy finding a path and 2 is found a path.
     public int pathFound = 0;
     public bool goalReached = false;
     public bool initialized;

@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SwarmState : State {
-
-    public AStarUnit AStarUnit;
+    public AStarUnit aStarUnit;
     public BoidAgent boidUnit;
 
     public override void EnterState() {
-        AStarUnit.enabled = false;
+        aStarUnit.enabled = false;
         boidUnit.enabled = true;
     }
 
     public override void ExitState() {
-        AStarUnit.enabled = true;
+        aStarUnit.enabled = true;
         boidUnit.enabled = false;
     }
 

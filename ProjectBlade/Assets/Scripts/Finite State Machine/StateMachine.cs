@@ -3,35 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine : MonoBehaviour {
-
     public State CurrentState { get; private set; }
 
     private void Awake() {
         CurrentState = null;
     }
 
-    //Change our current state.
-    public void ChangeState(State _newState) {
-        Debug.Log("Entering " + _newState);
-        //If we are in a state.
-        if (CurrentState != null) {         
-            //Run the ExitState of our current state.
-            CurrentState.ExitState();
-        }
-        //Set the current state to be our new state.
-        CurrentState = _newState;
-        //Run the EnterState of our new state.
-        CurrentState.EnterState();     
-    }
-
-
-    //Update this state.
-    public void Update() {
-        //If we are in a state.
+    private void Update() {
         if (CurrentState != null) {
-            //Update that state.
             CurrentState.UpdateState();  
         }
+    }
+
+    //Switch to a new state.
+    public void ChangeState(State newState) {
+        Debug.Log("Entering " + newState);
+        if (CurrentState != null) {
+            CurrentState.ExitState();
+        }
+        CurrentState = newState;
+        CurrentState.EnterState();
     }
 }
 
